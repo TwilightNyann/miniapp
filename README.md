@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Telegram Mini App - Бронювання Фото Сесій
 
-## Getting Started
+Цей репозиторій містить Telegram Mini App, розроблений за допомогою FastAPI, React та aiogram, що забезпечує можливість бронювання фотосесій через веб-додаток та інтерфейс Telegram-бота.
 
-First, run the development server:
+## Особливості
+- **Форма бронювання**: Дозволяє користувачам бронювати фотосесії через веб-форму.
+- **Повідомлення для адміністратора**: Повідомляє адміністраторів у Telegram про нове бронювання.
+- **Адміністративна панель**: Надає адміністраторам можливість переглядати, затверджувати або видаляти бронювання.
+
+## Структура проекту
+- **API**: Побудований з використанням FastAPI, обробляє бекенд-операції для бронювання та надсилання повідомлень.
+- **Telegram Bot**: Створений за допомогою aiogram, забезпечує взаємодію користувачів через Telegram.
+- **Фронтенд**: Розроблений за допомогою Next.js та React, надає зручний інтерфейс для бронювання.
+
+## Встановлення та налаштування
+
+### Вимоги
+- Python 3.8+
+- Node.js 14+
+- ngrok (для публікації локального сервера в інтернет)
+
+### Крок 1: Клонування репозиторію
 
 ```bash
+git clone <repository-url>
+cd <repository-name>
+Крок 2: Налаштування бекенду
+Встановіть залежності:
+
+bash
+Копіювати код
+pip install -r requirements.txt
+Конфігурація бази даних: Додаток використовує SQLite. База даних автоматично ініціалізується, а таблиці створюються під час запуску програми.
+
+Налаштування змінних середовища: Оновіть config.py, додавши токен вашого Telegram-бота та ID адміністраторів:
+
+python
+Копіювати код
+API_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+ADMIN_IDS = [123456789, 987654321]  # Замініть на фактичні ID користувачів Telegram
+WEBAPP_URL = "https://your-ngrok-url.ngrok.io"  # Замініть на ваш URL від ngrok
+Запуск API: Запустіть сервер FastAPI за допомогою uvicorn:
+
+bash
+Копіювати код
+uvicorn api:app --host 0.0.0.0 --port 8000 --reload
+Запустіть ngrok для публікації сервера:
+
+bash
+Копіювати код
+ngrok http 8000
+Крок 3: Налаштування фронтенду
+Встановіть залежності фронтенду:
+
+bash
+Копіювати код
+cd client
+npm install
+Запуск фронтенду:
+
+bash
+Копіювати код
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Крок 4: Запуск Telegram-бота
+Запустіть скрипт для забезпечення взаємодії з Telegram:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+bash
+Копіювати код
+python bot_handlers.py
+Використання
+Бронювання сесії
+Користувачі можуть взаємодіяти з ботом для початку процесу бронювання. Бот надішле веб-посилання на форму, де користувачі можуть вказати свої дані, включаючи ім'я, електронну адресу, телефон і бажану дату проведення сесії.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Дії адміністратора
+Адміністратори можуть:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Переглядати всі заброньовані сесії
+Отримувати повідомлення про нові бронювання
+Видаляти або оновлювати записи бронювань за необхідності
+Деталі конфігурації
+Бекенд-фреймворк: FastAPI обробляє всі бекенд-логіку та API-ендпоінти.
+Фронтенд-фреймворк: Next.js та React забезпечують динамічний інтерфейс користувача.
+База даних: SQLite налаштована для швидкого запуску, але її можна замінити на іншу базу даних.
+Логіка бота: aiogram обробляє команди Telegram та взаємодію з сесіями.
+Логування
+Всі події додатка, включаючи помилки, логуються за допомогою модуля logging в Python.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Приклади команд
+/start - Користувачі ініціюють бота.
+/book_session - Відкриває інтерфейс бронювання.
+/admin - Адміністративне меню для управління бронюваннями (доступно лише для ADMIN_IDS).
+Примітки щодо розгортання
+Цей додаток наразі налаштований для локальної розробки та опублікований через ngrok. Для продакшену рекомендується використовувати захищений, постійний хостинг замість ngrok для стабільного доступу в інтернет.
